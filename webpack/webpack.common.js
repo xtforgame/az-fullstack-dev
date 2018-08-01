@@ -44,23 +44,28 @@ module.exports = function(env) {
       publicPath: '/',
     },
     resolve: {
-      // extensions: ['', '.jsx', '.js', '.scss', '.css', '.json', '.md'],
+      // extensions: ['', '.js', '.scss', '.css', '.json', '.md'],
       alias: webpackResolveAlias,
-      extensions: ['.js', '.jsx'],
+      extensions: ['.js'],
     },
     module: {
       rules: [
         {
-          test: /\.(js|jsx)$/,
+          test: /\.js$/,
           include: [
             path.resolve(projRoot, frontEndJsEntryFolder),
             path.resolve(projRoot, commonConfigJsEntryFolder),
+            /node_modules\/koa-compose/,
           ],
           use: [{
             loader: 'babel-loader',
             options: {
               cacheDirectory: true,
-              presets: ['es2015'],
+              presets: [['env', {
+                targets: {
+                  browsers: ['defaults', 'not dead'],
+                },
+              }]],
               plugins: [
                 'transform-decorators-legacy',
                 'transform-class-properties',
@@ -68,7 +73,12 @@ module.exports = function(env) {
               ],
             },
           }],
-          exclude: /node_modules/,
+          // exclude: /node_modules/,
+          exclude: /node_modules(?!(\/|\\)koa-compose)/,
+        },
+        {
+          test: /\.json$/,
+          use: ['json-loader'],
         },
         {
           test: /\.css$/,
