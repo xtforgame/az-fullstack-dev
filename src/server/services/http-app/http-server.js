@@ -4,8 +4,13 @@ import httpShutdownExtension from 'http-shutdown';
 
 export function runServer(app, credentials, cb, httpPort = 80, httpsPort = 443){
   //const httpServer = http.createServer(app);
-  const httpServer = httpShutdownExtension(http.createServer((req, res) => {
-    let newHost = req.headers['host'].replace(':' + httpPort, ':' + httpsPort);
+  const httpServer = httpShutdownExtension(http.createServer(function (req, res) {
+    const host = req.headers.host;
+    if(!host){
+      res.writeHead(400, {});
+      return res.end();
+    }
+    const newHost = host.replace(':' + httpPort, ':' + httpsPort);
     res.writeHead(301, { 'Location': 'https://' + newHost + req.url });
     res.end();
   }));
