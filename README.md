@@ -1,6 +1,6 @@
-# AzServerDev
+# AzFullstackDev
 
-A general purpose seed project base
+A fullstack seed project
 
 Run `npm install`
 
