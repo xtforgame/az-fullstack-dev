@@ -77,13 +77,6 @@ module.exports = function({ mode }) {
           exclude: /node_modules(?!(\/|\\)koa-compose)/,
         },
         {
-          test: /\.json$/,
-          type: 'javascript/auto',
-          use: [{
-            loader: 'file-loader',
-          }],
-        },
-        {
           test: /\.css$/,
           use: [
             'style-loader',
