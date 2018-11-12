@@ -55,7 +55,6 @@ module.exports = function({ mode }) {
           include: [
             path.resolve(projRoot, frontEndJsEntryFolder),
             path.resolve(projRoot, commonConfigJsEntryFolder),
-            /node_modules\/koa-compose/,
           ],
           use: [{
             loader: 'babel-loader',
@@ -73,8 +72,14 @@ module.exports = function({ mode }) {
               ],
             },
           }],
-          // exclude: /node_modules/,
-          exclude: /node_modules(?!(\/|\\)koa-compose)/,
+          exclude: /node_modules/,
+        },
+        {
+          test: /\.json$/,
+          type: 'javascript/auto',
+          use: [{
+            loader: 'file-loader',
+          }],
         },
         {
           test: /\.css$/,

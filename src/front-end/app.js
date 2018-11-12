@@ -1,4 +1,4 @@
-import imageSrcInCode from './iconx.png';
+import imageSrcInCode from '~/iconx.png';
 
 console.log([1, 2, 3].map(v => v).join(', ')); // eslint-disable-line no-console
 
