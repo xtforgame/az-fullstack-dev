@@ -16,17 +16,6 @@ var frontEndJsEntryFilename = frontEndConfig.joinPathByKeys(['entry', 'js', 'fil
 var frontEndJsPublicFolder = frontEndConfig.joinPathByKeys(['entry', 'static']);
 var frontEndJsOutputFolder = frontEndConfig.joinPathByKeys(['output', 'default']);
 
-var frontEndCommonLibraryRelativePath = frontEndConfig.joinPathByKeys(['useCommonLibrary', 'relativePath']);
-
-var webpackResolveAlias = {
-  '~': path.resolve(projRoot, frontEndJsEntryFolder),
-  'config': path.resolve(projRoot, frontEndJsEntryFolder, 'configs', process.env.NODE_ENV ? process.env.NODE_ENV : 'production'),
-};
-
-if(frontEndCommonLibraryRelativePath && commonConfigJsEntryFolder){
-  webpackResolveAlias[frontEndCommonLibraryRelativePath] = path.resolve(projRoot, commonConfigJsEntryFolder);
-}
-
 module.exports = function({ mode }) {
   return {
     mode,
@@ -44,14 +33,14 @@ module.exports = function({ mode }) {
       publicPath: '/',
     },
     resolve: {
-      // extensions: ['', '.js', '.scss', '.css', '.json', '.md'],
-      alias: webpackResolveAlias,
-      extensions: ['.js', '.ts'],
+      // extensions: ['', '.jsx', '.js', '.scss', '.css', '.json', '.md'],
+      alias: {},
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
     },
     module: {
       rules: [
         {
-          test: /\.(js|ts)$/,
+          test: /\.(js|jsx|ts|tsx)$/,
           include: [
             path.resolve(projRoot, frontEndJsEntryFolder),
             path.resolve(projRoot, commonConfigJsEntryFolder),
@@ -69,19 +58,13 @@ module.exports = function({ mode }) {
                 '@babel/typescript',
               ],
               plugins: [
+                ['@babel/proposal-decorators', { decoratorsBeforeExport: true }],
                 '@babel/proposal-class-properties',
                 '@babel/proposal-object-rest-spread',
               ],
             },
           }],
           exclude: /node_modules/,
-        },
-        {
-          test: /\.json$/,
-          type: 'javascript/auto',
-          use: [{
-            loader: 'file-loader',
-          }],
         },
         {
           test: /\.css$/,
